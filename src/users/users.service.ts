@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { User } from './module/user.interface';
+import fetch from 'node-fetch';
 
 @Injectable()
 export class UsersService {
