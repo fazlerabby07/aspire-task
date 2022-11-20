@@ -1,21 +1,29 @@
 import { Injectable } from '@nestjs/common';
+import { User } from './module/user.interface';
 
 @Injectable()
 export class UsersService {
-  async findAllUsers() {
+  async findAllUsers(): Promise<User[]> {
     try {
       const userListResponse = await fetch(
         'https://24pullrequests.com/users.json',
       );
       const userList = await userListResponse.json();
 
-      return userList;
+      const users = userList.map((user) => {
+        return {
+          nickname: user.nickname,
+          githubProfile: user.github_profile,
+        };
+      });
+
+      return users;
     } catch (error) {
       return Promise.reject(error);
     }
   }
 
-  async findOneUser(query: { username: string }) {
+  async findOneUser(query: { username: string }): Promise<User> {
     try {
       const { username } = query;
 
@@ -24,7 +32,15 @@ export class UsersService {
       );
       const user = await userResponse.json();
 
-      return user;
+      const userInfo = {
+        nickname: user.nickname,
+        githubProfile: user.github_profile,
+        contributionsCount: user.contributions_count,
+        organizations: user.organisations,
+        pullRequests: user.pull_requests,
+      };
+
+      return userInfo;
     } catch (error) {
       return Promise.reject(error);
     }
