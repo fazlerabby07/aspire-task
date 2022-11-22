@@ -11,7 +11,9 @@ export class UsersService {
       );
       const userList = await userListResponse.json();
 
-      const users = userList.map((user) => {
+      const firstTenUsers = userList.slice(0, 10);
+
+      const users = firstTenUsers.map((user) => {
         return {
           nickname: user.nickname,
           githubProfile: user.github_profile,
